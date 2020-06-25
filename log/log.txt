@@ -1,0 +1,2 @@
+logger-app 2020/06/25 16:51:36 Logger: error panic
+logger-app 2020/06/25 16:51:36 Logger: err panic
