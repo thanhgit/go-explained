@@ -33,6 +33,11 @@
 * ### [Conccurency](doc/concurrency.md)
 * ### [Handling error and panic](doc/errorAndPanic.md)
 * ### [Logging](doc/logging.md)
+* ### [Dependency Injection](doc/di.md)
+* ### [Micro-services](doc/micro-services.md)
+
+## Training project
+* ### [Go basic knowledge](doc/goBasic.md)
 
 ## Common technical
 #### Create server with wc
