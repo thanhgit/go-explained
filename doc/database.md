@@ -437,3 +437,55 @@ func (userRepo *UserRepository)ChangeStreamWatcher(ctx context.Context) {
 	}
 }
 ```
+* ### Find max-depth of directory
+```text
+find . -type d -printf '%d\n' | sort -rn | head -1
+```
+
+* ### CRUD Gorm with gin framework
+    - Get all
+    ```go
+     var people []Person
+     if err := db.Find(&people).Error; err != nil {
+        c.AbortWithStatus(404)
+        fmt.Println(err)
+     } else {
+        c.JSON(200, people)
+     }
+    ```
+    - Get by id
+    ```go
+     if err := db.Where(“id = ?”, id).First(&person).Error; err != nil {
+        c.AbortWithStatus(404)
+        fmt.Println(err)
+     } else {
+        c.JSON(200, person)
+     }
+    ```
+    - Create
+    ```go
+     var person Person
+     c.BindJSON(&person)
+     db.Create(&person)
+     c.JSON(200, person)
+    ```
+    - Update
+    ```go
+     var person Person
+     id := c.Params.ByName(“id”)
+     if err := db.Where(“id = ?”, id).First(&person).Error; err != nil {
+        c.AbortWithStatus(404)
+        fmt.Println(err)
+     }
+     c.BindJSON(&person)
+     db.Save(&person)
+     c.JSON(200, person)
+    ```
+    - Delete
+    ```go
+     id := c.Params.ByName(“id”)
+     var person Person
+     d := db.Where(“id = ?”, id).Delete(&person)
+     fmt.Println(d)
+     c.JSON(200, gin.H{“id #” + id: “deleted”})
+    ````
