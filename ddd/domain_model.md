@@ -1,5 +1,5 @@
 # Domain model in detail
-- The intent of the modeling procecss is to capture a set of <b>high level and low level DDD artifacts</b>
+- The intent of the modeling process is to capture a set of <b>high level and low level DDD artifacts</b>
     - high level artifacts: low degree of implementation, more design concepts with minimal physical artifacts required 
     - low level artifacts: have a high degree of implementation
 - -> domain modeling processing identify whether monolithic or microservices architecture
@@ -11,24 +11,24 @@
 - Business operations 
 - Business events 
 
-## Techincal in DDD world
+## Technical in DDD world
 - Aggregates - Entities - Value objects 
 - Domain rules
 - Sagas
 - Commands / Queries 
 - Events
 
-## Aggregates:
+## Aggregates
 - Aggregate = principal identifier of your bounded context 
-- Entites object = secondary identifiers of your bounded context 
-- are responsible for capturing all state and business rules associated with the bounded context 
+- Entity object = secondary identifiers of your bounded context are responsible for capturing all state 
+- Business rules associated with the bounded context 
 
-## Aggregate identifiers;
+## Aggregate identifiers
 - each aggregate needs to be uniquely identified using a Aggregate Identifier, that is implemented using a business key
 
 ## Domain rules 
 - are pure business rule definitions 
-- assist the aggregate for any kind of business logic execution within the scope of a bounded context 
+- assist the aggregate for any kind of business logic execution within a bounded context 
 - can use to validate aggregate 
 
 ## Commands / Queries 
@@ -40,11 +40,11 @@
 - captures any kind of state change of aggregate or entity within the bounded context 
 
 ## Sagas
-- flush out any kind of business processes / workflows within your business domain
+- flush out any kind of business processes / work-flows within your business domain
 - can span across multiple bounded context, react to multiple business events across bounded context and "orchestrate the business process" by coordinating interactions
-- maintain data consistency for usecase, that may span across multiple microservices, with 2 ways:
+- maintain data consistency for use case, that may span across multiple microservices, with 2 ways:
     - Event Choreography: in a particular saga will raise and subscribe to events directly
-    - Event Orchestration: the lifecyle coordinate happens through a central component, that is responsible for saga creation, coordination of the flow across bounded context 
+    - Event Orchestration: the lifecycle coordinate happens through a central component, that is responsible for saga creation, coordination of the flow across bounded context 
 
 
 ## Domain model 
