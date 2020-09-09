@@ -30,6 +30,7 @@
 - are pure business rule definitions 
 - assist the aggregate for any kind of business logic execution within the scope of a bounded context 
 - can use to validate aggregate 
+- they present the new state change to the application services <=> take corresponding actions
 
 ## Commands / Queries 
 - represent any kind of operations within the bounded context 
@@ -59,3 +60,14 @@
     - inbound services: implement well-defined interface, which enable external parites to interact with the domain model
     - outbound services: implement all interactions with external responsitoryes or other boundedd context  
     - application services: act as a facade layer between domain model and (inbound and outbound services)
+
+## Domain-rich aggregate and anemic aggregate
+- Anemic aggretate:
+    - no purpose and intent of the domain 
+    - similar to DTO than core business objects
+- Domain-rich aggregate:
+    - have a clearly intent of the sub-domain in terms of business attributes and business methods 
+
+## Root aggregate:
+- cover all the business attributes required by the bounded context to functions. These attributes is modeled in business terms rather than technical terms 
+- expression of domain logic via business methods and it is implemented as simple methods within the aggregate and work with the current state of the aggregate 
