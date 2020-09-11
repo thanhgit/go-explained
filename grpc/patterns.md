@@ -161,3 +161,109 @@ if err != nil {
     log.Fatalf("Error close stream: %v", err)
 }
 ```
+## Bi-directional streaming 
+- the client is sending a request to the server as a stream of messages 
+- the server also responds with a stream of messages 
+![](../media/grpc_bi_directional.png)
+- server/order.proto
+```text
+service OrderManagement {
+    rpc processOrders(stream google.protobuf.StringValue) returns (stream CombinedShipment)
+}
+
+message Order {
+    string id = 1;
+    repeated string items = 2;
+    string description = 3;
+    float price = 4;
+    string destination = 5;
+}
+
+message CombinedShipment {
+    string id = 1;
+    string status = 2;
+    repeated Order orderList = 3;
+}
+```
+- server/main.go
+```text
+func (s *server) ProcessOrders(ctx context.Context, stream pb.OrderManagement_ProcessOrdersServer) error {
+    ...
+    for {
+        orderId, err := stream.Recv()
+        if err == io.EOF {
+            for _, comb := range combinedShipment {
+                stream.Send(&comb)
+            }
+            return nil
+        }
+        if err != nil {
+            return err
+        }
+        // logic to organize orders into shipments based on the destination
+        ...
+        
+        if batchMarker == orderBatchSize {
+            for _, comb := range combinedShipmentMap {
+                stream.Send(&comb)
+            }   
+            batchMarker = 0
+            combinedShipmentMap = make(map[string]pb.CombinedShipment)
+        } else {
+            batchMarker++
+        }
+    }
+}
+```
+- main.go
+```text
+// send message
+streamOrder, _ := c.ProcessOrders(ctx)
+if err := streamOrder.Send(
+        &wrapper.StringValue{ Value: "123" }
+    ); err != nil {
+    log.Fatalf("Error: %v", err)    
+}
+
+if err := streamOrder.Send(
+        &wrapper.StringValue{ Value: "124" }
+    ); err != nil {
+    log.Fatalf("Error: %v", err)    
+}
+
+if err := streamOrder.Send(
+        &wrapper.StringValue{ Value: "125" }
+    ); err != nil {
+    log.Fatalf("Error: %v", err)    
+}
+
+//
+channel := make(chan struct{})
+go asncClientBidirectionlRPC(streamProcOrder, channel)
+time.Sleep(time.Milisecond * 1000)
+if err := streamProcOrder.Send(
+        &wrapper.StringValue{ Value: "111" }
+    ); err != nil {
+    log.Fatalf("Error: %v", err)
+}
+
+if err := streamProcOrder.CloseSend(); err != nil {
+    log.Fatalf("Error: %v", err)
+}
+
+<- channel
+
+func asncClientBidirectionalRPC(
+    streamProcOrder pb.OrderManagement_ProcessOrdersClient,
+    c chan struct{}) {
+    for {
+        combinedShipment, errProcOrder := streamProcOrder.Recv()
+        if errProcOrder == io.EOF {
+            break        
+        }
+        log.Printf("Combined shipment: ", combinedShipment.OrdersList)
+    }
+}
+```
+## Use-case for gRPC in overall picture
+![](../media/sa_sample.png)
