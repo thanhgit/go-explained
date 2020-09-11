@@ -16,6 +16,54 @@ rpc getProduct(google.protobuf.StringValue) returns (Product)
 ```
 ![](../media/grpc_flow.png)
 
+# gRPC
+
+### productInfo.proto
+```text
+syntax = "proto3";
+package ecommerce;
+
+service ProductInfo {
+    rpc addProduct(Product) returns (ProductID);
+    rpc getProduct(ProductID) returns (Product);
+}
+
+message Product {
+    string id = 1
+    string name = 2
+    string description = 3
+}
+
+message ProductID {
+    string value = 1
+}
+```
+
+## productInfoService.go
+```text
+import (  "context"  pb "github.com/grpc-up-and-running/samples/ch02/productinfo/go/proto"  "google.golang.org/grpc" )
+
+func (s *server) addProduct (ctx context.Context, in *pb.Product) (*pb.ProductID, err) {
+    // logic
+}
+
+func (s *server) getProduct (cdtx context.Content, in *pb.ProductID) (*pb.Product, err) {
+    // logic
+}
+```
+
+## main.go
+```text
+func main() {
+    l, _ := net.Listen("tcp", port)
+    s := grpc.NewServer()
+    pb.RegisterProductInfoServer(s, &server{}) 
+    if err := s.serve(l); err != nil {
+        log.Fatalf(err)   
+    }   
+}
+```
+
 ## Implementing grpc server
 - Step 1: go get -u google.golang.org/grpc
 - Step 1.1: define proto file
