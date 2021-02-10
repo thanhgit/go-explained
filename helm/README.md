@@ -33,8 +33,8 @@ helm search hub wordpress  --max-col-width=0
 ## Interact repo
 ```text
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo add stable https://kubernetes-charts.storage.googleapis.com
-helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
+helm repo add stable 	https://charts.helm.sh/stable
+helm repo add incubator 	https://charts.helm.sh/incubator
 helm search bitnami
 helm search bitnami --output yaml
 helm install my-release bitnami/<chart>
