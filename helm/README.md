@@ -81,3 +81,36 @@ helm plugin install https://github.com/databus23/helm-diff
 | helm secrets | Used to help conceal secrets from Helm charts |
 | helm monitor | Used to monitor a release and perform a rollback if certain events occur |
 | helm unittest | Used to perform unit testing on a Helm chart |
+
+## How to build go app
+- Build binary
+```bash
+go build -o webhook main/main.go
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
